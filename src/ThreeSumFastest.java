@@ -4,9 +4,9 @@ import java.lang.management.ThreadMXBean;
 
 import java.io.*;
 
-import java.util.Arrays;
+import java.util.*;
 
-public class ThreeSumFaster {
+public class ThreeSumFastest {
 
     static ThreadMXBean bean = ManagementFactory.getThreadMXBean( );
 
@@ -35,16 +35,19 @@ public class ThreeSumFaster {
 
         for (int i=0; i<n; i++)
         {
+
+            HashSet<Integer> s = new HashSet<Integer>();
             for (int j=i+1; j<n; j++)
             {
 
                 int key = -(arr[i]+arr[j]);
-                binarySearch(arr, key);
 
-                //Using a binary search to find the number that will complete the set instead
-                if(binarySearch(arr, key) != -100000000){
+                if (s.contains(key)){
                     cnt++;
+                }else{
+                    s.add(arr[j]);
                 }
+
 
             }
         }
@@ -55,11 +58,11 @@ public class ThreeSumFaster {
 
     public static void main(String[] args)
     {
-        runFullExperiment("ThreeSumFaster-Exp1-ThrowAway.txt");
+        runFullExperiment("ThreeSumFastest-Exp1-ThrowAway.txt");
 
-        runFullExperiment("ThreeSumFaster-Exp2.txt");
+        runFullExperiment("ThreeSumFastest-Exp2.txt");
 
-        runFullExperiment("ThreeSumFaster-Exp3.txt");
+        runFullExperiment("ThreeSumFastest-Exp3.txt");
     }
 
     static void runFullExperiment(String resultsFileName){
@@ -183,18 +186,5 @@ public class ThreeSumFaster {
         return newList;
     }
 
-    public static int binarySearch(int[] list, int searchFor){
-        int i = 0;
-        int j = list.length -1;
-        int k = (i+j)/2;
-        while (i <= j){
-            if (list[k] < searchFor){
-                i = k + 1; }
-            else if(list[k] == searchFor){
-                return k; }
-            else{
-                j = k - 1; }
-            k = (i+j)/2; }
-        // Using -100000000 instead of -1 because k could equal -1
-        return -100000000; }
+
 }

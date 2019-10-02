@@ -14,7 +14,7 @@ public class ThreeSum {
     static long MINVALUE = -100000;
     static int numberOfTrials = 10;
 
-    static int MAXINPUTSIZE  = 6000;
+    static int MAXINPUTSIZE  = 10240;
 
     static int MININPUTSIZE  =  10;
 
