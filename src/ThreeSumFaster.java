@@ -4,7 +4,9 @@ import java.lang.management.ThreadMXBean;
 
 import java.io.*;
 
-public class ThreeSum {
+import java.util.Arrays;
+
+public class ThreeSumFaster {
 
     static ThreadMXBean bean = ManagementFactory.getThreadMXBean( );
 
@@ -27,43 +29,37 @@ public class ThreeSum {
     static void threeSum(int[] arr, int n)
     {
         //Start count at zero, will eventually display the amount of sets that = 0.
+        //Also, sort the array so a binary search can be performed.
+        Arrays.sort(arr);
         int cnt = 0;
 
-        //Run 3 loops using n (the length of the array) to cycle through the numbers in the array
-        //Checks one by one to see if the sum of those three elements is zero
         for (int i=0; i<n; i++)
         {
             for (int j=i+1; j<n; j++)
             {
-                for (int k=j+1; k<n; k++)
-                {
-                    if (arr[i]+arr[j]+arr[k] == 0)
-                    {
-                        //Code currently commented out, shows which sets add to 0.
-                        /*System.out.print(arr[i]);
-                        System.out.print(" ");
-                        System.out.print(arr[j]);
-                        System.out.print(" ");
-                        System.out.print(arr[k]);
-                        System.out.print("\n");*/
 
-                        //If the sum of the elements is equal to zero the counter increments
-                        cnt++;
-                    }
+                int key = -(arr[i]+arr[j]);
+                binarySearch(arr, key);
+
+                //Using a binary search to find the number that will complete the set instead
+                if(binarySearch(arr, key) != -100000000){
+                    cnt++;
                 }
+
             }
         }
         //Displays the amount of sets of three elements that added to zero
         System.out.println(cnt + " set(s) of 3 numbers found that add to 0.");
     }
 
+
     public static void main(String[] args)
     {
-        runFullExperiment("ThreeSum-Exp1-ThrowAway.txt");
+        runFullExperiment("ThreeSumFaster-Exp1-ThrowAway.txt");
 
-        runFullExperiment("ThreeSum-Exp2.txt");
+        runFullExperiment("ThreeSumFaster-Exp2.txt");
 
-        runFullExperiment("ThreeSum-Exp3.txt");
+        runFullExperiment("ThreeSumFaster-Exp3.txt");
     }
 
     static void runFullExperiment(String resultsFileName){
@@ -152,7 +148,7 @@ public class ThreeSum {
 
                 threeSum(arr, n);
 
-                 batchElapsedTime = batchElapsedTime + TrialStopwatch.elapsedTime(); // *** uncomment this line if timing trials individually
+                batchElapsedTime = batchElapsedTime + TrialStopwatch.elapsedTime(); // *** uncomment this line if timing trials individually
 
             }
 
@@ -186,4 +182,19 @@ public class ThreeSum {
         }
         return newList;
     }
+
+    public static int binarySearch(int[] list, int searchFor){
+        int i = 0;
+        int j = list.length -1;
+        int k = (i+j)/2;
+        while (i <= j){
+            if (list[k] < searchFor){
+                i = k + 1; }
+            else if(list[k] == searchFor){
+                return k; }
+            else{
+                j = k - 1; }
+            k = (i+j)/2; }
+        // Using -100000000 instead of -1 because k could equal -1
+        return -100000000; }
 }
